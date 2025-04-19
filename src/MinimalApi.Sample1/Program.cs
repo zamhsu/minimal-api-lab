@@ -36,35 +36,35 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/products", async (IProductService productService, CreateProductParameter parameter) =>
+app.MapPost("/api/products", async (IProductService productService, CreateProductParameter parameter) =>
 {
     var dto = parameter.Adapt<CreateProductDto>();
     var result = await productService.CreateAsync(dto);
     return Results.Created($"/products/{result.Id}", result);
 });
 
-app.MapGet("/products", async (IProductService productService) =>
+app.MapGet("/api/products", async (IProductService productService) =>
 {
     var dto = await productService.GetAllAsync();
     var outputModel = dto.Adapt<List<ProductOutputModel>>();
     return Results.Ok(outputModel);
 });
 
-app.MapGet("/products/{id:int}", async (IProductService productService, int id) =>
+app.MapGet("/api/products/{id:int}", async (IProductService productService, int id) =>
 {
     var dto = await productService.GetByIdAsync(id);
     var outputModel = dto.Adapt<ProductOutputModel>();
     return outputModel is not null ? Results.Ok(outputModel) : Results.NotFound();
 });
 
-app.MapPut("/products/{id:int}", async (IProductService productService, int id, UpdateProductParameter parameter) =>
+app.MapPut("/api/products/{id:int}", async (IProductService productService, int id, UpdateProductParameter parameter) =>
 {
     var dto = parameter.Adapt<UpdateProductDto>();
     var success = await productService.UpdateAsync(id, dto);
     return success ? Results.NoContent() : Results.NotFound();
 });
 
-app.MapDelete("/products/{id:int}", async (IProductService productService, int id) =>
+app.MapDelete("/api/products/{id:int}", async (IProductService productService, int id) =>
 {
     var success = await productService.DeleteAsync(id);
     return success ? Results.NoContent() : Results.NotFound();

@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var products = app.MapGroup("/products");
+var products = app.MapGroup("/api/products");
 
 products.MapPost("/", CreateProductAsync);
 products.MapGet("/", GetAllProductsAsync);
